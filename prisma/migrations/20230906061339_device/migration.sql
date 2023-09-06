@@ -1,0 +1,22 @@
+-- CreateTable
+CREATE TABLE `Device` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL DEFAULT '',
+    `notification` INTEGER NOT NULL DEFAULT 1,
+    `tempHigh` DECIMAL(10, 1) NOT NULL DEFAULT 30,
+    `tempLow` DECIMAL(10, 1) NOT NULL DEFAULT 26,
+    `phHigh` DECIMAL(10, 1) NOT NULL DEFAULT 8,
+    `phLow` DECIMAL(10, 1) NOT NULL DEFAULT 6.5,
+    `tdoHigh` DECIMAL(10, 1) NOT NULL DEFAULT 6,
+    `tdoLow` DECIMAL(10, 1) NOT NULL DEFAULT 4,
+    `tdsHigh` DECIMAL(10, 1) NOT NULL DEFAULT 600,
+    `tdsLow` DECIMAL(10, 1) NOT NULL DEFAULT 300,
+    `turbiditiesHigh` DECIMAL(10, 1) NOT NULL DEFAULT 17.3,
+    `turbiditiesLow` DECIMAL(10, 1) NOT NULL DEFAULT 8.6,
+    `masterId` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Device` ADD CONSTRAINT `Device_masterId_fkey` FOREIGN KEY (`masterId`) REFERENCES `Master`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
