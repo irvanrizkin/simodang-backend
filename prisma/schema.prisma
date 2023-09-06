@@ -20,3 +20,9 @@ model User {
   token         String        @default("")
   role          String        @default("user")
 }
+
+model Master {
+  id            String        @id
+  name          String        @default("")
+  simNum        String        @default("")
+}
