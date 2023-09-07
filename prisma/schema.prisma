@@ -19,6 +19,7 @@ model User {
   address       String        @default("")
   token         String        @default("")
   role          String        @default("user")
+  ponds         Pond[]
 }
 
 model Master {
@@ -44,4 +45,20 @@ model Device {
   turbiditiesLow    Decimal       @default(8.6)   @db.Decimal(10,1)
   master            Master        @relation(fields: [masterId], references: [id])
   masterId          String
+  pond              Pond?
+}
+
+model Pond {
+  id                Int           @id             @default(autoincrement())
+  name              String        @default("")
+  address           String        @default("")
+  city              String        @default("")
+  seedDate          DateTime      @default(now())
+  imageUrl          String        @default("https://placehold.co/1280x720.png")
+  status            Int           @default(1)
+  isFilled          Int           @default(1)
+  user              User          @relation(fields: [userId], references: [id])
+  userId            Int
+  device            Device        @relation(fields: [deviceId], references: [id])
+  deviceId          String        @unique
 }
