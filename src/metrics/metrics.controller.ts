@@ -19,4 +19,9 @@ export class MetricsController {
   ) {
     return this.metricsService.findMetricsByRangeDate(+id, metricsQueryDto);
   }
+
+  @Get('/last/:id')
+  findLastMetric(@Param('id') id: string) {
+    return this.metricsService.findLastMetric(+id);
+  }
 }

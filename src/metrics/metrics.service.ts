@@ -62,4 +62,15 @@ export class MetricsService {
     LIMIT ${take} OFFSET ${skip};
     `;
   }
+
+  async findLastMetric(pondId: number) {
+    return await this.prisma.metric.findFirst({
+      where: {
+        pondId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }
