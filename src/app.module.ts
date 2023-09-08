@@ -7,6 +7,7 @@ import { DevicesModule } from './devices/devices.module';
 import { PondsModule } from './ponds/ponds.module';
 import { ConfigModule } from '@nestjs/config';
 import { MetricsModule } from './metrics/metrics.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MetricsModule } from './metrics/metrics.module';
     DevicesModule,
     PondsModule,
     MetricsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
