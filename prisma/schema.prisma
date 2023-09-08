@@ -60,8 +60,8 @@ model Pond {
   isFilled          Int           @default(1)
   user              User          @relation(fields: [userId], references: [id])
   userId            Int
-  device            Device        @relation(fields: [deviceId], references: [id])
-  deviceId          String        @unique
+  device            Device?       @relation(fields: [deviceId], references: [id])
+  deviceId          String?       @unique
   metrics           Metric[]
 }
 
