@@ -6,6 +6,7 @@ import { MastersModule } from './masters/masters.module';
 import { DevicesModule } from './devices/devices.module';
 import { PondsModule } from './ponds/ponds.module';
 import { ConfigModule } from '@nestjs/config';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     MastersModule,
     DevicesModule,
     PondsModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
