@@ -46,4 +46,11 @@ export class PondsService {
   async findAll(): Promise<Pond[]> {
     return await this.prisma.pond.findMany();
   }
+
+  async findOne(id: number): Promise<Pond> {
+    return await this.prisma.pond.findUnique({
+      where: { id },
+      include: { device: true },
+    });
+  }
 }

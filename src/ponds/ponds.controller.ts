@@ -7,6 +7,7 @@ import {
   Request,
   UseInterceptors,
   UploadedFile,
+  Param,
 } from '@nestjs/common';
 import { PondsService } from './ponds.service';
 import { CreatePondDto } from './dto/create-pond.dto';
@@ -32,5 +33,10 @@ export class PondsController {
   @Get()
   findAll() {
     return this.pondsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.pondsService.findOne(+id);
   }
 }
