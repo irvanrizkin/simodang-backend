@@ -18,6 +18,19 @@ export class PondsService {
     file: Express.Multer.File,
   ): Promise<Pond> {
     const { name, address, city, deviceId } = createPondDto;
+
+    if (!file) {
+      return await this.prisma.pond.create({
+        data: {
+          name,
+          address,
+          city,
+          userId,
+          deviceId,
+        },
+      });
+    }
+
     const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${extname(
       file.originalname,
     )}`;
