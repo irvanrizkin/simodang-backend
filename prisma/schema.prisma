@@ -83,5 +83,6 @@ model Article {
   id                Int           @id             @default(autoincrement())
   title             String        @default("")
   url               String        @default("")
+  image             String        @default("")
   published         Int           @default(0)
 }

@@ -9,11 +9,12 @@ export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
-    const { title, url } = createArticleDto;
+    const { title, url, image } = createArticleDto;
     return await this.prisma.article.create({
       data: {
         title,
         url,
+        image,
       },
     });
   }
@@ -32,12 +33,13 @@ export class ArticlesService {
     id: number,
     updateArticleDto: UpdateArticleDto,
   ): Promise<Article> {
-    const { title, url, published } = updateArticleDto;
+    const { title, url, image, published } = updateArticleDto;
     return await this.prisma.article.update({
       where: { id },
       data: {
         title,
         url,
+        image,
         published,
       },
     });
