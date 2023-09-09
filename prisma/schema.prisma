@@ -78,3 +78,10 @@ model Metric {
   device            Device        @relation(fields: [deviceId], references: [id])
   deviceId          String
 }
+
+model Article {
+  id                Int           @id             @default(autoincrement())
+  title             String        @default("")
+  url               String        @default("")
+  published         Int           @default(0)
+}

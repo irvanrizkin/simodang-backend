@@ -8,6 +8,7 @@ import { PondsModule } from './ponds/ponds.module';
 import { ConfigModule } from '@nestjs/config';
 import { MetricsModule } from './metrics/metrics.module';
 import { UsersModule } from './users/users.module';
+import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     PondsModule,
     MetricsModule,
     UsersModule,
+    ArticlesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
