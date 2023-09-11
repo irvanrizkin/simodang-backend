@@ -1,4 +1,4 @@
-import { Controller, Request, Get, UseGuards } from '@nestjs/common';
+import { Controller, Request, Get, UseGuards, Delete } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { Notification } from '@prisma/client';
 import { TokenGuard } from 'src/guard/token.guard';
@@ -13,5 +13,17 @@ export class NotificationsController {
     const { id: userId } = req.user;
 
     return this.notificationsService.findAllByToken(userId);
+  }
+
+  @Delete()
+  @UseGuards(TokenGuard)
+  async deleteAllByToken(@Request() req): Promise<{ message: string }> {
+    const { id: userId } = req.user;
+
+    await this.notificationsService.deleteAllByToken(userId);
+
+    return {
+      message: 'all notification from this user was deleted successfully',
+    };
   }
 }

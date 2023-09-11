@@ -24,7 +24,14 @@ export class NotificationsService {
 
   async findAllByToken(userId: number): Promise<Notification[]> {
     return await this.prisma.notification.findMany({
+      where: { userId, deleted: 0 },
+    });
+  }
+
+  async deleteAllByToken(userId: number): Promise<void> {
+    await this.prisma.notification.updateMany({
       where: { userId },
+      data: { deleted: 1 },
     });
   }
 }
