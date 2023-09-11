@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Device } from '@prisma/client';
 import { UpdateDeviceDto } from './dto/update-device.dto';
+import { Threshold } from './dto/threshold';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class DevicesService {
@@ -58,5 +60,49 @@ export class DevicesService {
         masterId,
       },
     });
+  }
+
+  isInRange(value: number, high: Decimal, low: Decimal): boolean {
+    return value < high.toNumber() && value > low.toNumber();
+  }
+
+  async isInThreshold(id: string, threshold: Threshold): Promise<boolean> {
+    const { temperature, ph, tdo, tds, turbidity } = threshold;
+
+    const device = await this.prisma.device.findUnique({
+      where: { id },
+    });
+    if (!device) throw new NotFoundException('device not found');
+
+    const {
+      tempLow,
+      tempHigh,
+      phLow,
+      phHigh,
+      tdoLow,
+      tdoHigh,
+      tdsLow,
+      tdsHigh,
+      turbiditiesLow,
+      turbiditiesHigh,
+    } = device;
+
+    const isTempOutRange = this.isInRange(temperature, tempHigh, tempLow);
+    const isPhOutRange = this.isInRange(ph, phHigh, phLow);
+    const isTdsOutRange = this.isInRange(tds, tdsHigh, tdsLow);
+    const isTdoOutRange = this.isInRange(tdo, tdoHigh, tdoLow);
+    const isTurbidityOutRange = this.isInRange(
+      turbidity,
+      turbiditiesHigh,
+      turbiditiesLow,
+    );
+
+    return (
+      isTempOutRange &&
+      isPhOutRange &&
+      isTdoOutRange &&
+      isTdsOutRange &&
+      isTurbidityOutRange
+    );
   }
 }

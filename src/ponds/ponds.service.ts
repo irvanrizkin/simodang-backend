@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePondDto } from './dto/create-pond.dto';
 import { Pond } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { extname } from 'path';
 import { StorageService } from 'src/storage/storage.service';
+import { Threshold } from '../devices/dto/threshold';
+import { DevicesService } from 'src/devices/devices.service';
 
 @Injectable()
 export class PondsService {
   constructor(
     private prisma: PrismaService,
     private readonly storageService: StorageService,
+    private devicesService: DevicesService,
   ) {}
 
   async create(
@@ -64,6 +67,39 @@ export class PondsService {
     return await this.prisma.pond.findUnique({
       where: { id },
       include: { device: true },
+    });
+  }
+
+  async updatePondByThreshold(id: number, threshold: Threshold): Promise<Pond> {
+    const { temperature, ph, tdo, tds, turbidity } = threshold;
+
+    const pond = await this.prisma.pond.findUnique({
+      where: { id },
+      include: { device: true },
+    });
+
+    if (!pond) throw new NotFoundException('pond not found');
+    const { deviceId } = pond;
+    if (!deviceId)
+      throw new NotFoundException('device not attached to this pond');
+
+    const isInThreshold = await this.devicesService.isInThreshold(deviceId, {
+      temperature,
+      ph,
+      tdo,
+      tds,
+      turbidity,
+    });
+
+    if (isInThreshold) {
+      return await this.prisma.pond.update({
+        where: { id },
+        data: { status: 1 },
+      });
+    }
+    return await this.prisma.pond.update({
+      where: { id },
+      data: { status: 0 },
     });
   }
 }

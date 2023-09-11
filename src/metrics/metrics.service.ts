@@ -3,10 +3,14 @@ import { CreateMetricDto } from './dto/create-metric.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Metric } from '@prisma/client';
 import { MetricsQueryDto } from './dto/metrics.query.dto';
+import { PondsService } from 'src/ponds/ponds.service';
 
 @Injectable()
 export class MetricsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private pondsService: PondsService,
+  ) {}
 
   async create(createMetricDto: CreateMetricDto): Promise<Metric> {
     const {
@@ -24,6 +28,14 @@ export class MetricsService {
     const { deviceId } = pond;
     if (!deviceId)
       throw new NotFoundException('device not attached to this pond');
+
+    await this.pondsService.updatePondByThreshold(pondId, {
+      temperature,
+      ph,
+      tdo,
+      tds,
+      turbidity,
+    });
 
     return await this.prisma.metric.create({
       data: {
