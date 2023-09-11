@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE `notification` ADD COLUMN `deleted` INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE `Notification` ADD COLUMN `deleted` INTEGER NOT NULL DEFAULT 0;
