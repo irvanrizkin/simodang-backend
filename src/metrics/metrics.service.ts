@@ -22,7 +22,7 @@ export class MetricsService {
       turbidities_val: turbidity,
     } = createMetricDto;
 
-    const pond = await this.prisma.pond.findUnique({ where: { id: pondId } });
+    const pond = await this.pondsService.findOne(pondId);
     if (!pond) throw new NotFoundException('pond not found');
 
     const { deviceId } = pond;
