@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MetricsModule } from './metrics/metrics.module';
 import { UsersModule } from './users/users.module';
 import { ArticlesModule } from './articles/articles.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ArticlesModule } from './articles/articles.module';
     MetricsModule,
     UsersModule,
     ArticlesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

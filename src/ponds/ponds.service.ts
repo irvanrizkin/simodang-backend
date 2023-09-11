@@ -6,6 +6,7 @@ import { extname } from 'path';
 import { StorageService } from 'src/storage/storage.service';
 import { Threshold } from '../devices/dto/threshold';
 import { DevicesService } from 'src/devices/devices.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class PondsService {
@@ -13,6 +14,7 @@ export class PondsService {
     private prisma: PrismaService,
     private readonly storageService: StorageService,
     private devicesService: DevicesService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async create(
@@ -79,7 +81,7 @@ export class PondsService {
     });
 
     if (!pond) throw new NotFoundException('pond not found');
-    const { deviceId } = pond;
+    const { deviceId, userId } = pond;
     if (!deviceId)
       throw new NotFoundException('device not attached to this pond');
 
@@ -97,6 +99,11 @@ export class PondsService {
         data: { status: 1 },
       });
     }
+
+    await this.notificationsService.create(userId, {
+      title: 'Kolam anda berada dalam kondisi tidak baik!',
+      message: 'Periksa kondisi tambak milik anda',
+    });
     return await this.prisma.pond.update({
       where: { id },
       data: { status: 0 },
