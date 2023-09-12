@@ -149,4 +149,13 @@ export class PondsService {
       turbiditiesLow,
     });
   }
+
+  async remove(id: number): Promise<Pond> {
+    const pond = await this.findOne(id);
+    if (!pond) throw new NotFoundException('pond not found, failed to remove');
+
+    return await this.prisma.pond.delete({
+      where: { id },
+    });
+  }
 }
