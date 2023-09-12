@@ -21,6 +21,8 @@ model User {
   role          String        @default("user")
   ponds         Pond[]
   notifications Notification[]
+  masters       Master[]
+  devices       Device[]
 }
 
 model Master {
@@ -28,6 +30,8 @@ model Master {
   name          String        @default("")
   simNum        String        @default("")
   devices       Device[]
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        Int?
 }
 
 model Device {
@@ -48,6 +52,8 @@ model Device {
   masterId          String
   pond              Pond?
   metrics           Metric[]
+  user              User?         @relation(fields: [userId], references: [id])
+  userId            Int?
 }
 
 model Pond {

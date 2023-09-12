@@ -8,12 +8,13 @@ export class MastersService {
   constructor(private prisma: PrismaService) {}
 
   create(createMasterDto: CreateMasterDto): Promise<Master> {
-    const { id, name, simNum } = createMasterDto;
+    const { id, name, simNum, userId } = createMasterDto;
     return this.prisma.master.create({
       data: {
         id,
         name,
         simNum,
+        userId,
       },
     });
   }

@@ -11,12 +11,13 @@ export class DevicesService {
   constructor(private prisma: PrismaService) {}
 
   async create(createDeviceDto: CreateDeviceDto): Promise<Device> {
-    const { id, name, masterId } = createDeviceDto;
+    const { id, name, masterId, userId } = createDeviceDto;
     return await this.prisma.device.create({
       data: {
         id,
         name,
         masterId,
+        userId,
       },
     });
   }

@@ -1,0 +1,11 @@
+-- AlterTable
+ALTER TABLE `Device` ADD COLUMN `userId` INTEGER NULL;
+
+-- AlterTable
+ALTER TABLE `Master` ADD COLUMN `userId` INTEGER NULL;
+
+-- AddForeignKey
+ALTER TABLE `Master` ADD CONSTRAINT `Master_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Device` ADD CONSTRAINT `Device_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
