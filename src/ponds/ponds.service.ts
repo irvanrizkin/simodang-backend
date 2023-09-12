@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePondDto } from './dto/create-pond.dto';
-import { Pond } from '@prisma/client';
+import { Device, Pond } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { extname } from 'path';
 import { StorageService } from 'src/storage/storage.service';
 import { Threshold } from '../devices/dto/threshold';
 import { DevicesService } from 'src/devices/devices.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { UpdateDevicePondDto } from './dto/update-device-pond.dto';
 
 @Injectable()
 export class PondsService {
@@ -107,6 +108,45 @@ export class PondsService {
     return await this.prisma.pond.update({
       where: { id },
       data: { status: 0 },
+    });
+  }
+
+  async updateDeviceByPond(
+    id: number,
+    updateDevicePondDto: UpdateDevicePondDto,
+  ): Promise<Device> {
+    const {
+      notification,
+      tempHigh,
+      tempLow,
+      phHigh,
+      phLow,
+      tdoHigh,
+      tdoLow,
+      tdsHigh,
+      tdsLow,
+      turbiditiesHigh,
+      turbiditiesLow,
+    } = updateDevicePondDto;
+
+    const pond = await this.findOne(id);
+    if (!pond) throw new NotFoundException('pond not found');
+    const { deviceId } = pond;
+    if (!deviceId)
+      throw new NotFoundException('device not attached to this pond');
+
+    return await this.devicesService.update(deviceId, {
+      notification,
+      tempHigh,
+      tempLow,
+      phHigh,
+      phLow,
+      tdoHigh,
+      tdoLow,
+      tdsHigh,
+      tdsLow,
+      turbiditiesHigh,
+      turbiditiesLow,
     });
   }
 }
