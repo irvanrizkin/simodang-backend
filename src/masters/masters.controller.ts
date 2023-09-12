@@ -29,6 +29,7 @@ export class MastersController {
   }
 
   @Patch(':id')
+  @UseGuards(TokenGuard, AdminGuard)
   update(@Param('id') id: string, @Body() updateMasterDto: UpdateMasterDto) {
     return this.mastersService.update(id, updateMasterDto);
   }
