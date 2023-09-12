@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { MastersService } from './masters.service';
 import { CreateMasterDto } from './dto/create-master.dto';
 import { TokenGuard } from 'src/guard/token.guard';
 import { AdminGuard } from 'src/guard/admin.guard';
+import { UpdateMasterDto } from './dto/update-master.dto';
 
 @Controller('masters')
 export class MastersController {
@@ -17,5 +26,10 @@ export class MastersController {
   @Get()
   findAll() {
     return this.mastersService.findAll();
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateMasterDto: UpdateMasterDto) {
+    return this.mastersService.update(id, updateMasterDto);
   }
 }
