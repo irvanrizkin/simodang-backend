@@ -41,6 +41,7 @@ export class DevicesService {
       turbiditiesHigh,
       turbiditiesLow,
       masterId,
+      userId,
     } = updateDeviceDto;
 
     return await this.prisma.device.update({
@@ -59,6 +60,7 @@ export class DevicesService {
         turbiditiesHigh,
         turbiditiesLow,
         masterId,
+        userId,
       },
     });
   }

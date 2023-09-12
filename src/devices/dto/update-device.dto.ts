@@ -12,4 +12,5 @@ export class UpdateDeviceDto {
   turbiditiesHigh: number;
   turbiditiesLow: number;
   masterId: string;
+  userId: number;
 }
